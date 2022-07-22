@@ -3,7 +3,7 @@ import logoPlaceholder from '@assets/placeholders/logo.svg';
 const siteSettings = {
   name: 'PickBazar E-commerce Shop',
   description: '',
-  currencyCode: 'USD',
+  currencyCode: 'VND',
   logo: logoPlaceholder,
 };
 

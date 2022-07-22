@@ -25,7 +25,7 @@ const Banner: React.FC<{ layout: string }> = ({ layout }) => {
   );
   //const { data, error } = useGroupQuery(group?.toString()!);
 
-  const data = { type: { banners: [''] } };
+  const data = { type: { banners: ['geeg'] } };
 
   //if (error) return <ErrorMessage message={error.message} />;
   const Component = layout

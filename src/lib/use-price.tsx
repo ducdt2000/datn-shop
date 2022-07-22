@@ -7,7 +7,7 @@ export function formatPrice({
   currencyCode,
   locale,
 }: {
-  amount: number;
+  amount: any;
   currencyCode: string;
   locale: string;
 }) {
@@ -25,8 +25,8 @@ export function formatVariantPrice({
   currencyCode,
   locale,
 }: {
-  baseAmount: number;
-  amount: number;
+  baseAmount: any;
+  amount: any;
   currencyCode: string;
   locale: string;
 }) {
@@ -52,10 +52,12 @@ export default function usePrice(
   } | null
 ) {
   const { currency } = useSettings();
+
   const { amount, baseAmount, currencyCode = currency } = data ?? {};
   const { locale } = useRouter();
+
   const value = useMemo(() => {
-    if (typeof amount !== 'number' || !currencyCode) return '';
+    // if (typeof amount !== 'number' || !currencyCode) return '';
     const currentLocale = locale ? locale : 'en';
     return baseAmount
       ? formatVariantPrice({

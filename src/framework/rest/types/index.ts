@@ -106,28 +106,23 @@ export declare type Product = {
   name?: string;
   slug?: string;
   type?: Type;
-  categories?: Category[];
+  productType?: Category;
   variations: AttributeValue[];
   variation_options: Variation[];
   // pivot?: OrderProductPivot
   // orders: Order[]
-  shop?: any;
+  brand?: any;
   description?: string;
-  in_stock?: boolean;
-  is_taxable?: boolean;
-  sale_price?: number;
   sku?: string;
   gallery?: Attachment[];
   image?: Attachment;
   // status?: ProductStatus
-  height?: string;
-  length?: string;
   width?: string;
   price?: number;
   min_price?: number;
   max_price?: number;
   related_products?: Product[];
-  quantity?: number;
+  countInStock?: number;
   unit?: string;
   created_at?: Date;
   updated_at?: Date;

@@ -1,4 +1,4 @@
-import { siteSettings } from '@settings/site';
+import { siteSettings } from '@settings/site.settings';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import DrawerWrapper from '@components/ui/drawer/drawer-wrapper';

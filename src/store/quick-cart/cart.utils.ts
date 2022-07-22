@@ -1,19 +1,15 @@
 export interface Item {
   id: string | number;
   price: number;
-  quantity?: number;
+  amount?: number;
   stock?: number;
   [key: string]: any;
 }
 
-export interface UpdateItemInput extends Partial<Omit<Item, "id">> {}
+export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 
-export function addItemWithQuantity(
-  items: Item[],
-  item: Item,
-  quantity: number
-) {
-  if (quantity <= 0)
+export function addItemWithQuantity(items: Item[], item: Item, amount: number) {
+  if (amount <= 0)
     throw new Error("cartQuantity can't be zero or less than zero");
   const existingItemIndex = items.findIndex(
     (existingItem) => existingItem.id === item.id
@@ -21,24 +17,22 @@ export function addItemWithQuantity(
 
   if (existingItemIndex > -1) {
     const newItems = [...items];
-    newItems[existingItemIndex].quantity! += quantity;
+    newItems[existingItemIndex].amount! += amount;
     return newItems;
   }
-  return [...items, { ...item, quantity }];
+  return [...items, { ...item, amount }];
 }
 
 export function removeItemOrQuantity(
   items: Item[],
-  id: Item["id"],
-  quantity: number
+  id: Item['id'],
+  amount: number
 ) {
   return items.reduce((acc: Item[], item) => {
     if (item.id === id) {
-      const newQuantity = item.quantity! - quantity;
+      const newQuantity = item.amount! - amount;
 
-      return newQuantity > 0
-        ? [...acc, { ...item, quantity: newQuantity }]
-        : [...acc];
+      return newQuantity > 0 ? [...acc, { ...item, newQuantity }] : [...acc];
     }
     return [...acc, item];
   }, []);
@@ -48,13 +42,13 @@ export function addItem(items: Item[], item: Item) {
   return [...items, item];
 }
 
-export function getItem(items: Item[], id: Item["id"]) {
+export function getItem(items: Item[], id: Item['id']) {
   return items.find((item) => item.id === id);
 }
 
 export function updateItem(
   items: Item[],
-  id: Item["id"],
+  id: Item['id'],
   item: UpdateItemInput
 ) {
   return items.map((existingItem) =>
@@ -62,25 +56,25 @@ export function updateItem(
   );
 }
 
-export function removeItem(items: Item[], id: Item["id"]) {
+export function removeItem(items: Item[], id: Item['id']) {
   return items.filter((existingItem) => existingItem.id !== id);
 }
-export function inStock(items: Item[], id: Item["id"]) {
+export function inStock(items: Item[], id: Item['id']) {
   const item = getItem(items, id);
-  if (item) return item["quantity"]! < item["stock"]!;
+  if (item) return item['amount']! < item['stock']!;
   return false;
 }
 export const calculateItemTotals = (items: Item[]) =>
   items.map((item) => ({
     ...item,
-    itemTotal: item.price * item.quantity!,
+    itemTotal: item.price * item.amount!,
   }));
 
 export const calculateTotal = (items: Item[]) =>
-  items.reduce((total, item) => total + item.quantity! * item.price, 0);
+  items.reduce((total, item) => total + item.amount! * item.price, 0);
 
 export const calculateTotalItems = (items: Item[]) =>
-  items.reduce((sum, item) => sum + item.quantity!, 0);
+  items.reduce((sum, item) => sum + item.amount!, 0);
 
 export const calculateUniqueItems = (items: Item[]) => items.length;
 

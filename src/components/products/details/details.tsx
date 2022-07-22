@@ -39,12 +39,12 @@ const Details: React.FC<Props> = ({
     name,
     image, //could only had image we need to think it also
     description,
-    unit,
-    categories,
+    unit: unit,
+    productType: productType,
     gallery,
     type,
-    quantity,
-    shop,
+    countInStock: quantity,
+    brand: shop,
     slug,
   } = product ?? {};
   const { t } = useTranslation('common');
@@ -56,7 +56,7 @@ const Details: React.FC<Props> = ({
   const { attributes } = useAttributes();
 
   const { price, basePrice, discount } = usePrice({
-    amount: product?.sale_price ? product?.sale_price : product?.price!,
+    amount: product?.price!,
     baseAmount: product?.price,
   });
 
@@ -71,14 +71,14 @@ const Details: React.FC<Props> = ({
   );
   const isSelected = isVariationSelected(variations, attributes);
   let selectedVariation: any = {};
-  if (isSelected) {
-    selectedVariation = product?.variation_options?.find((o: any) =>
-      isEqual(
-        o.options.map((v: any) => v.value).sort(),
-        Object.values(attributes).sort()
-      )
-    );
-  }
+  // if (isSelected) {
+  //   selectedVariation = product?.variation_options?.find((o: any) =>
+  //     isEqual(
+  //       o.options.map((v: any) => v.value).sort(),
+  //       Object.values(attributes).sort()
+  //     )
+  //   );
+  // }
 
   const scrollDetails = () => {
     scroller.scrollTo('details', {
@@ -198,7 +198,7 @@ const Details: React.FC<Props> = ({
                   <AddToCart
                     data={product}
                     variant="big"
-                    variation={selectedVariation}
+                    //variation={selectedVariation}
                     disabled={selectedVariation?.is_disable || !isSelected}
                   />
                 </div>
@@ -230,10 +230,10 @@ const Details: React.FC<Props> = ({
             </div>
           </Waypoint>
 
-          {!!categories?.length && (
+          {!!productType && (
             <CategoryBadges
-              categories={categories}
-              basePath={`/${type?.slug}`}
+              categories={[productType]}
+              basePath={`/${type?.id}`}
               onClose={closeModal}
             />
           )}

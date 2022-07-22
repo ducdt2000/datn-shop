@@ -15,7 +15,6 @@ interface Props {
     | 'single'
     | 'details';
   counterClass?: string;
-  variation?: any;
   disabled?: boolean;
 }
 
@@ -24,7 +23,6 @@ export const AddToCart = ({
   variant = 'helium',
   counterVariant,
   counterClass,
-  variation,
   disabled,
 }: Props) => {
   const {
@@ -34,7 +32,7 @@ export const AddToCart = ({
     getItemFromCart,
     isInCart,
   } = useCart();
-  const item = generateCartItem(data, variation);
+  const item = generateCartItem(data);
   const handleAddClick = (
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>
   ) => {
@@ -58,7 +56,7 @@ export const AddToCart = ({
   ) : (
     <>
       <Counter
-        value={getItemFromCart(item.id).quantity}
+        value={getItemFromCart(item.id).amount}
         onDecrement={handleRemoveClick}
         onIncrement={handleAddClick}
         variant={counterVariant || variant}
