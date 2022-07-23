@@ -6,6 +6,7 @@ export function generateCartItem(item: Product) {
     properties: item.properties.map((pro) => ({
       name: pro.name,
       value: pro.values[0],
+      values: pro.values,
     })),
   };
 }

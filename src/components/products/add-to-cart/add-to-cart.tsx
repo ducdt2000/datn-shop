@@ -44,9 +44,11 @@ export const AddToCart = ({
   };
   const handleRemoveClick = (e: any) => {
     e.stopPropagation();
-    removeItemFromCart(item.id);
+
+    removeItemFromCart(item.id, 1);
   };
-  const outOfStock = isInCart(item?.id) && !isInStock(item.id);
+  // const outOfStock = isInCart(item?.id) && !isInStock(item.id);
+  const outOfStock = !isInStock(item.id);
   return !isInCart(item?.id) ? (
     <AddToCartBtn
       disabled={disabled || outOfStock}

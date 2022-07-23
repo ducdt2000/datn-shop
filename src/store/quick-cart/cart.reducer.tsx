@@ -51,11 +51,7 @@ export function cartReducer(state: State, action: Action): State {
       return generateFinalState(state, items);
     }
     case 'REMOVE_ITEM_OR_QUANTITY': {
-      const items = removeItemOrQuantity(
-        state.items,
-        action.id,
-        (action.amount = 1)
-      );
+      const items = removeItemOrQuantity(state.items, action.id, action.amount);
       return generateFinalState(state, items);
     }
     case 'ADD_ITEM': {

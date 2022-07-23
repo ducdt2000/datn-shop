@@ -26,13 +26,16 @@ export function addItemWithQuantity(items: Item[], item: Item, amount: number) {
 export function removeItemOrQuantity(
   items: Item[],
   id: Item['id'],
-  amount: number
+  amount?: number
 ) {
   return items.reduce((acc: Item[], item) => {
     if (item.id === id) {
-      const newQuantity = item.amount! - amount;
+      const newQuantity = item.amount! - (amount ?? 1);
 
-      return newQuantity > 0 ? [...acc, { ...item, newQuantity }] : [...acc];
+      const result =
+        newQuantity > 0 ? [...acc, { ...item, amount: newQuantity }] : [...acc];
+
+      return result;
     }
     return [...acc, item];
   }, []);
@@ -61,7 +64,7 @@ export function removeItem(items: Item[], id: Item['id']) {
 }
 export function inStock(items: Item[], id: Item['id']) {
   const item = getItem(items, id);
-  if (item) return item['amount']! < item['stock']!;
+  if (item) return item['amount']! < item['countInStock']!;
   return false;
 }
 export const calculateItemTotals = (items: Item[]) =>

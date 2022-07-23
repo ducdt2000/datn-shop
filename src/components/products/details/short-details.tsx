@@ -154,7 +154,7 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
                   data={product}
                   variant="big"
                   //variation={selectedVariation}
-                  disabled={selectedVariation?.is_disable || !isSelected}
+                  disabled={!isSelected}
                 />
               ) : (
                 <div className="bg-red-500 rounded text-sm text-light px-3 py-2">

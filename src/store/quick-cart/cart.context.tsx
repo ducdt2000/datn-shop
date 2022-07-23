@@ -7,7 +7,7 @@ import { useAtom } from 'jotai';
 import { verifiedResponseAtom } from '@store/checkout';
 interface CartProviderState extends State {
   addItemToCart: (item: Item, amount: number) => void;
-  removeItemFromCart: (id: Item['id']) => void;
+  removeItemFromCart: (id: Item['id'], amount?: number) => void;
   clearItemFromCart: (id: Item['id']) => void;
   getItemFromCart: (id: Item['id']) => any | undefined;
   isInCart: (id: Item['id']) => boolean;
@@ -48,8 +48,11 @@ export const CartProvider: React.FC = (props) => {
 
   const addItemToCart = (item: Item, amount: number) =>
     dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, amount });
-  const removeItemFromCart = (id: Item['id']) =>
-    dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id });
+  const removeItemFromCart = (id: Item['id'], amount?: number) => {
+    console.log('thisis amioun', amount);
+
+    return dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id, amount });
+  };
   const clearItemFromCart = (id: Item['id']) =>
     dispatch({ type: 'REMOVE_ITEM', id });
   const isInCart = useCallback(
