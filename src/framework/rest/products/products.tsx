@@ -14,7 +14,11 @@ const Products: React.FC<ProductsProps> = ({ shopId, layout }) => {
   const { query } = useRouter();
   const { homePage } = useHomepage();
 
-  const group = (query.pages?.[0] as string) ?? (homePage?.slug as string);
+  // const group = (query.pages?.[0] as string) ?? (homePage?.slug as string);
+
+  const brandId = query.brandId;
+  const productTypeId = query.productTypeId;
+  const search = query.search;
 
   const {
     isFetching: loading,
@@ -24,16 +28,11 @@ const Products: React.FC<ProductsProps> = ({ shopId, layout }) => {
     isError,
     data,
     error,
-  } = useProductsQuery(
-    {
-      // ...(Boolean(shopId) ? { shop_id: Number(shopId) } : { type: group }),
-      // text: query?.text as string,
-      // category: query?.category as string,
-    },
-    {
-      // enabled: Boolean(group),
-    }
-  );
+  } = useProductsQuery({
+    productTypeId: productTypeId as string,
+    brandId: brandId as string,
+    search: search as string,
+  });
 
   if (isError && error) return <ErrorMessage message={error.message} />;
   function handleLoadMore() {

@@ -29,13 +29,13 @@ export default function Home() {
   const { layout, page } = useLayout();
 
   useEffect(() => {
-    if (query.text || query.category) {
+    if (query.search || query.productTypeId || query.brandId) {
       scroller.scrollTo('grid', {
         smooth: true,
         offset: -110,
       });
     }
-  }, [query.text, query.category]);
+  }, [query.search, query.productTypeId, query.brandId]);
   let Component = MAP_LAYOUT_TO_GROUP['default'];
   return (
     <>

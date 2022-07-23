@@ -1,4 +1,4 @@
-import pickBy from 'lodash/pickBy';
+import { createQueryPath } from '@utils/query';
 import Request from './request';
 type NumberOrString = number | string;
 export type ParamsType = {
@@ -9,25 +9,19 @@ export type ParamsType = {
   is_active?: string;
   shop_id?: string;
   limit?: number;
+  offset?: number;
+  search?: string;
+  brandId?: string;
+  productTypeId?: string;
+  brandType?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+  orderBy?: string;
+  orderType?: string;
 };
 export class CoreApi {
   http = Request;
   constructor(public _base_path: string) {}
-  private stringifySearchQuery(values: any) {
-    const parsedValues = pickBy(values);
-    return Object.keys(parsedValues)
-      .map((k) => {
-        if (k === 'type') {
-          return `${k}.slug:${parsedValues[k]};`;
-        }
-        if (k === 'category') {
-          return `categories.slug:${parsedValues[k]};`;
-        }
-        return `${k}:${parsedValues[k]};`;
-      })
-      .join('')
-      .slice(0, -1);
-  }
   find(params: ParamsType) {
     const {
       type,
@@ -36,18 +30,33 @@ export class CoreApi {
       status,
       is_active,
       shop_id,
-      limit = 30,
+      limit = 10,
+      offset,
+      search,
+      brandId,
+      productTypeId,
+      brandType,
+      dateFrom,
+      dateTo,
+      orderBy,
+      orderType,
     } = params;
-    const searchString = this.stringifySearchQuery({
-      type,
-      name,
-      category,
-      status,
-      shop_id,
-      is_active,
-    });
-    const queryString = `?search=${searchString}&searchJoin=and&limit=${limit}`;
-    return this.http.get(this._base_path + queryString);
+
+    const exParams = {
+      offset,
+      search,
+      brandId,
+      productTypeId,
+      brandType,
+      dateFrom,
+      dateTo,
+      orderBy,
+      orderType,
+    };
+
+    const path = createQueryPath(this._base_path, { ...exParams, limit });
+
+    return this.http.get(path);
   }
   findAll() {
     return this.http.get(this._base_path);

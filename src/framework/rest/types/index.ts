@@ -8,12 +8,12 @@ export type CategoriesQueryOptionsType = {
   limit?: number;
 };
 export type ProductsQueryOptionsType = {
-  type?: string;
-  text?: string;
-  category?: string;
-  status?: string;
-  limit?: number;
-  shop_id?: number;
+  // type?: string;
+  // text?: string;
+  // category?: string;
+  // status?: string;
+  // limit?: number;
+  // shop_id?: number;
 };
 
 export type ShopsQueryOptionsType = {
@@ -76,18 +76,19 @@ export declare type Coupon = {
   updated_at: Date;
 };
 export declare type Category = {
-  id: number | string;
+  id?: number | string;
   name: string;
-  slug: string;
+  slug?: string;
   parent?: number;
-  children: Category[];
+  children?: Category[];
   details?: string;
   image?: Attachment;
   icon?: string;
-  type: Type;
-  products: Product[];
-  created_at: Date;
-  updated_at: Date;
+  searchType?: string;
+  type?: Type;
+  products?: Product[];
+  created_at?: Date;
+  updated_at?: Date;
 };
 export declare type Attachment = {
   id?: number | string;

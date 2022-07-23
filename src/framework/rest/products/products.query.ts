@@ -1,8 +1,4 @@
-import {
-  QueryParamsType,
-  ProductsQueryOptionsType,
-  Product,
-} from '@framework/types';
+import { QueryParamsType, Product } from '@framework/types';
 import { CoreApi, ParamsType } from '@framework/utils/core-api';
 import { API_ENDPOINTS } from '@framework/utils/endpoints';
 import { mapPaginatorData } from '@framework/utils/data-mappers';
@@ -12,6 +8,7 @@ import {
   UseInfiniteQueryOptions,
   useQuery,
 } from 'react-query';
+import { ProductsQueryOptionsType } from '@ts-types/custom.types';
 const ProductService = new CoreApi(API_ENDPOINTS.PRODUCTS);
 
 type PaginatedProduct = {
@@ -32,6 +29,10 @@ const fetchProducts = async ({
     fetchedData = response.data;
   }
   const { data, ...rest } = fetchedData;
+
+  //here
+  console.log('rest', rest);
+
   return { data, paginatorInfo: mapPaginatorData({ ...rest }) };
 };
 
