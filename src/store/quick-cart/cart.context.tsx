@@ -49,8 +49,6 @@ export const CartProvider: React.FC = (props) => {
   const addItemToCart = (item: Item, amount: number) =>
     dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, amount });
   const removeItemFromCart = (id: Item['id'], amount?: number) => {
-    console.log('thisis amioun', amount);
-
     return dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id, amount });
   };
   const clearItemFromCart = (id: Item['id']) =>

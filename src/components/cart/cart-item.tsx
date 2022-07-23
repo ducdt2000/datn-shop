@@ -8,6 +8,7 @@ import usePrice from '@lib/use-price';
 import { useTranslation } from 'next-i18next';
 import { useCart } from '@store/quick-cart/cart.context';
 import json from '@data/settings/settings.json';
+import { generateCartItem } from '@store/quick-cart/generate-cart-item';
 
 interface CartItemProps {
   item: any;
@@ -24,9 +25,12 @@ const CartItem = ({ item }: CartItemProps) => {
   const { price: itemPrice } = usePrice({
     amount: item.itemTotal,
   });
+
   function handleIncrement(e: any) {
     e.stopPropagation();
-    addItemToCart(item, 1);
+    const newItem = generateCartItem(item);
+
+    addItemToCart(newItem, 1);
   }
   const handleRemoveClick = (e: any) => {
     e.stopPropagation();
