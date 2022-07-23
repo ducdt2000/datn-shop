@@ -28,8 +28,15 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
   const { closeModal } = useModalAction();
   const { attributes } = useAttributes();
 
-  const { name, slug, image, unit, quantity, min_price, max_price } =
-    product ?? {};
+  const {
+    name,
+    slug,
+    image,
+    unit: unit,
+    countInStock: quantity,
+    price: min_price,
+    price: max_price,
+  } = product ?? {};
 
   const navigate = (path: string) => {
     router.push(path);
@@ -37,7 +44,7 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
   };
 
   const { price, basePrice, discount } = usePrice({
-    amount: product?.sale_price ? product?.sale_price : product?.price!,
+    amount: product?.price!,
     baseAmount: product?.price!,
   });
 
@@ -49,14 +56,14 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
   const isSelected = isVariationSelected(variations, attributes);
 
   let selectedVariation: any = {};
-  if (isSelected) {
-    selectedVariation = product?.variation_options?.find((o: any) =>
-      isEqual(
-        o.options.map((v: any) => v.value).sort(),
-        Object.values(attributes).sort()
-      )
-    );
-  }
+  // if (isSelected) {
+  //   selectedVariation = product?.variation_options?.find((o: any) =>
+  //     isEqual(
+  //       o.options.map((v: any) => v.value).sort(),
+  //       Object.values(attributes).sort()
+  //     )
+  //   );
+  // }
   const hasVariations = !isEmpty(variations);
   return (
     <div
@@ -146,8 +153,8 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
                 <AddToCart
                   data={product}
                   variant="big"
-                  variation={selectedVariation}
-                  disabled={selectedVariation?.is_disable || !isSelected}
+                  //variation={selectedVariation}
+                  disabled={!isSelected}
                 />
               ) : (
                 <div className="bg-red-500 rounded text-sm text-light px-3 py-2">

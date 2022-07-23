@@ -1,3 +1,11 @@
 export function formatAddress(...address: string[]) {
-  return address.join(', ');
+  const result = address.join(', ');
+
+  return result;
+}
+
+export function unformatAddress(addressFull: string) {
+  const buff = addressFull.split(', ');
+
+  return buff;
 }

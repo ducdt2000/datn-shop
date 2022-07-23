@@ -3,7 +3,7 @@ import logoPlaceholder from '@assets/placeholders/logo.svg';
 const siteSettings = {
   name: 'PickBazar E-commerce Shop',
   description: '',
-  currencyCode: 'USD',
+  currencyCode: 'VND',
   logo: logoPlaceholder,
 };
 
@@ -46,6 +46,28 @@ const initialState = {
     socials: [],
     contact: '',
   },
+  deliveryTime: [
+    {
+      title: 'Express Delivery',
+      description: '90 min express delivery',
+    },
+    {
+      title: 'Morning',
+      description: '8.00 AM - 11.00 AM',
+    },
+    {
+      title: 'Noon',
+      description: '11.00 AM - 2.00 PM',
+    },
+    {
+      title: 'Afternoon',
+      description: '2.00 PM - 5.00 PM',
+    },
+    {
+      title: 'Evening',
+      description: '5.00 PM - 8.00 PM',
+    },
+  ],
 };
 
 export const SettingsContext = React.createContext<State | any>(initialState);

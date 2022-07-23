@@ -62,9 +62,7 @@ export const useSocialLoginMutation = (
   return useMutation(
     (input: SocialLoginInputType) => AuthService.socialLogin(input),
     {
-      onError: (error: any) => {
-        console.log(error.message);
-      },
+      onError: (error: any) => {},
       ...options,
     }
   );

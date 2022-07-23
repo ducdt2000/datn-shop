@@ -13,7 +13,7 @@ type OganessonProps = {
 
 const Oganesson: React.FC<OganessonProps> = ({ product, className }) => {
   const { t } = useTranslation('common');
-  const { name, image, quantity } = product ?? {};
+  const { name, image, countInStock: quantity } = product ?? {};
   const { price, basePrice, discount } = usePrice({
     amount: product.sale_price ? product.sale_price : product.price!,
     baseAmount: product.price,

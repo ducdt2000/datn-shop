@@ -9,6 +9,9 @@ import { DefaultSeo } from 'next-seo';
 import PrivateRoute from '@lib/private-route';
 import { appWithTranslation } from 'next-i18next';
 import '@assets/main.css';
+import ManagedModal from '@components/ui/modal/managed-modal';
+import ManagedDrawer from '@components/ui/drawer/managed-drawer';
+import { ToastContainer } from 'react-toastify';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -38,6 +41,9 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                 ) : (
                   getLayout(<Component {...pageProps} />)
                 )}
+                <ManagedModal />
+                <ManagedDrawer />
+                <ToastContainer autoClose={2000} theme="colored" />
               </>
             </SessionProvider>
           </CartProvider>

@@ -1,12 +1,14 @@
 import { Image } from '@components/ui/image';
 import { motion } from 'framer-motion';
-import { siteSettings } from '@settings/site';
+import { siteSettings } from '@settings/site.settings';
 import Counter from '@components/ui/counter';
 import { CloseIcon } from '@components/icons/close-icon';
 import { fadeInOut } from '@lib/motion/fade-in-out';
 import usePrice from '@lib/use-price';
 import { useTranslation } from 'next-i18next';
 import { useCart } from '@store/quick-cart/cart.context';
+import json from '@data/settings/settings.json';
+import { generateCartItem } from '@store/quick-cart/generate-cart-item';
 
 interface CartItemProps {
   item: any;
@@ -23,9 +25,12 @@ const CartItem = ({ item }: CartItemProps) => {
   const { price: itemPrice } = usePrice({
     amount: item.itemTotal,
   });
+
   function handleIncrement(e: any) {
     e.stopPropagation();
-    addItemToCart(item, 1);
+    const newItem = generateCartItem(item);
+
+    addItemToCart(newItem, 1);
   }
   const handleRemoveClick = (e: any) => {
     e.stopPropagation();
@@ -43,7 +48,7 @@ const CartItem = ({ item }: CartItemProps) => {
     >
       <div className="flex-shrink-0">
         <Counter
-          value={item.quantity}
+          value={item.amount}
           onDecrement={handleRemoveClick}
           onIncrement={handleIncrement}
           variant="pillVertical"
@@ -53,7 +58,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
       <div className="w-10 sm:w-16 h-10 sm:h-16 flex items-center justify-center overflow-hidden bg-gray-100 mx-4 flex-shrink-0 relative">
         <Image
-          src={item?.image ?? siteSettings?.product?.placeholderImage}
+          src={item?.defaultImageLink ?? siteSettings?.product?.placeholder}
           alt={item.name}
           layout="fill"
           objectFit="contain"
@@ -63,7 +68,7 @@ const CartItem = ({ item }: CartItemProps) => {
         <h3 className="font-bold text-heading">{item.name}</h3>
         <p className="my-2.5 font-semibold text-accent">{price}</p>
         <span className="text-xs text-body">
-          {item.quantity} X {item.unit}
+          {item.amount} X {item.unit}
         </span>
       </div>
       <span className="ms-auto font-bold text-heading">{itemPrice}</span>

@@ -4,7 +4,6 @@ import usePrice from '@lib/use-price';
 import { AddToCart } from '@components/products/add-to-cart/add-to-cart';
 import { useTranslation } from 'next-i18next';
 import { useModalAction } from '@components/ui/modal/modal.context';
-import { Product } from '@framework/types';
 import { productPlaceholder } from '@lib/placeholders';
 import CartIcon from '@components/icons/cart';
 
@@ -21,12 +20,21 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
   //   baseAmount: product.price,
   // });
 
-  const { name, image, unit, quantity, min_price, max_price, product_type } =
-    product ?? {};
+  const {
+    name,
+    imageLinks,
+    defaultImageLink,
+    productType,
+    price: min_price,
+    price: max_price,
+    brand,
+    countInStock,
+  } = product ?? {};
   const { price, basePrice, discount } = usePrice({
-    amount: product.sale_price ? product.sale_price : product.price!,
-    baseAmount: product.price,
+    amount: product.price!,
+    baseAmount: product.price!,
   });
+
   const { price: minPrice } = usePrice({
     amount: min_price,
   });
@@ -43,7 +51,7 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
   return (
     <article
       className={cn(
-        'product-card cart-type-helium rounded border border-border-200 h-full bg-light overflow-hidden transition-shadow duration-200 hover:shadow-sm',
+        'product-card cart-type-helium rounded border border-border-200 h-full bg-light overflow-hidden transition-shadow duration-200 hover:shadow-sm hover:-translate-y-0.5',
         className
       )}
     >
@@ -54,7 +62,7 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
       >
         <span className="sr-only">{t('text-product-image')}</span>
         <Image
-          src={image?.original ?? productPlaceholder}
+          src={defaultImageLink ?? productPlaceholder}
           alt={name}
           layout="fill"
           objectFit="contain"
@@ -76,11 +84,11 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
         >
           {name}
         </h3>
-        <p className="text-muted text-xs">{unit}</p>
+        <p className="text-muted text-xs">{countInStock}</p>
         {/* End of product info */}
 
         <div className="flex items-center justify-between min-h-6 mt-7 md:mt-8 relative">
-          {product_type.toLowerCase() === 'variable' ? (
+          {productType?.name?.toLowerCase() === 'variable' ? (
             <>
               <div>
                 <span className="text-accent text-sm md:text-[15px] font-semibold">
@@ -92,7 +100,7 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
                 </span>
               </div>
 
-              {Number(quantity) > 0 && (
+              {Number(countInStock) > 0 && (
                 <button
                   onClick={handleProductQuickView}
                   className="order-5 sm:order-4 py-2 px-3 sm:px-4 border-2 border-border-100 flex items-center justify-center sm:justify-start text-sm font-semibold rounded-full text-accent hover:text-light bg-light hover:bg-accent hover:border-accent transition-colors duration-300 focus:outline-none focus:bg-accent focus:border-accent focus:text-light"
@@ -115,13 +123,13 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
                 </span>
               </div>
 
-              {Number(quantity) > 0 && (
-                <AddToCart data={product} variant="single" />
+              {Number(countInStock) > 0 && (
+                <AddToCart data={product} variant="helium" />
               )}
             </>
           )}
 
-          {Number(quantity) <= 0 && (
+          {Number(countInStock) <= 0 && (
             <div className="bg-red-500 rounded text-xs text-light px-2 py-1">
               {t('text-out-stock')}
             </div>

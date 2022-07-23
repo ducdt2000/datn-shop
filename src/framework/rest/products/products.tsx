@@ -26,12 +26,12 @@ const Products: React.FC<ProductsProps> = ({ shopId, layout }) => {
     error,
   } = useProductsQuery(
     {
-      ...(Boolean(shopId) ? { shop_id: Number(shopId) } : { type: group }),
-      text: query?.text as string,
-      category: query?.category as string,
+      // ...(Boolean(shopId) ? { shop_id: Number(shopId) } : { type: group }),
+      // text: query?.text as string,
+      // category: query?.category as string,
     },
     {
-      enabled: Boolean(group),
+      // enabled: Boolean(group),
     }
   );
 

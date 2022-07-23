@@ -9,38 +9,39 @@ import { authorizationAtom } from '@store/authorization-atom';
 import { AUTH_TOKEN } from '@lib/constants';
 
 type FormValues = {
-  email: string;
+  account: string;
   password: string;
 };
 
 const Login = () => {
   const { t } = useTranslation('common');
+
   const [errorMessage, setErrorMessage] = useState('');
   const [_, authorize] = useAtom(authorizationAtom);
   const { closeModal } = useModalAction();
   const { mutate: login, isLoading: loading } = useLoginMutation();
 
-  function onSubmit({ email, password }: FormValues) {
+  function onSubmit({ account, password }: FormValues) {
     login(
       {
-        email,
+        account,
         password,
       },
       {
-        onSuccess: (data) => {
-          if (data?.token && data?.permissions?.length) {
+        onSuccess: ({ data }) => {
+          if (data?.token) {
             Cookies.set(AUTH_TOKEN, data.token);
             authorize(true);
             closeModal();
             return;
-          }
-          if (!data.token) {
-            setErrorMessage(t('error-credential-wrong'));
+          } else {
+            if (data.detail) {
+              setErrorMessage('form:error-account-block');
+            }
+            setErrorMessage('form:error-credential-wrong');
           }
         },
-        onError: (error: any) => {
-          console.log(error.message);
-        },
+        onError: (error: any) => {},
       }
     );
   }

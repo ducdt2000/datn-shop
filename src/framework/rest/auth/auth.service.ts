@@ -2,7 +2,7 @@ import { CoreApi } from '@framework/utils/core-api';
 import { API_ENDPOINTS } from '@framework/utils/endpoints';
 
 export type LoginInputType = {
-  email: string;
+  account: string;
   password: string;
 };
 export type RegisterUserInputType = {
