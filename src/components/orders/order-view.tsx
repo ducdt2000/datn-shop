@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import Link from '@components/ui/link';
 import usePrice from '@lib/use-price';
-import { formatAddress } from '@lib/format-address';
 import { formatString } from '@lib/format-string';
 import { ROUTES } from '@lib/routes';
 import { useTranslation } from 'next-i18next';
@@ -13,6 +12,8 @@ import { OrderItems } from '@components/orders/order-items';
 import { useAtom } from 'jotai';
 import { clearCheckoutAtom } from '@store/checkout';
 import SuborderItems from '@components/orders/suborder-items';
+import { ORDER_STATUS_NAME } from '@ts-types/generated';
+import { formatAddress } from '@utils/format-address';
 
 export default function OrderView({ order }: any) {
   const { t } = useTranslation('common');
@@ -24,13 +25,15 @@ export default function OrderView({ order }: any) {
     resetCheckout();
   }, [resetCart, resetCheckout]);
 
-  const { price: total } = usePrice({ amount: order?.paid_total! });
-  const { price: sub_total } = usePrice({ amount: order?.amount! });
+  const dataOrder = order.data;
+
+  const { price: total } = usePrice({ amount: dataOrder?.bill });
+  const { price: sub_total } = usePrice({ amount: dataOrder?.bill });
   const { price: shipping_charge } = usePrice({
-    amount: order?.delivery_fee ?? 0,
+    amount: dataOrder?.delivery_fee ?? 0,
   });
-  const { price: tax } = usePrice({ amount: order?.sales_tax ?? 0 });
-  const { price: discount } = usePrice({ amount: order?.discount ?? 0 });
+  const { price: tax } = usePrice({ amount: dataOrder?.sales_tax ?? 0 });
+  const { price: discount } = usePrice({ amount: dataOrder?.discount ?? 0 });
 
   return (
     <div className="p-4 sm:p-8">
@@ -39,7 +42,7 @@ export default function OrderView({ order }: any) {
           <span className="mt-5 sm:mt-0 me-auto order-2 sm:order-1">
             <span className="me-4">{t('text-status')} :</span>
             <Badge
-              text={order?.status?.name!}
+              text={ORDER_STATUS_NAME[dataOrder?.status]}
               className="font-normal text-sm whitespace-nowrap"
             />
           </span>
@@ -56,14 +59,14 @@ export default function OrderView({ order }: any) {
             <h3 className="mb-2 text-sm text-heading font-semibold">
               {t('text-order-number')}
             </h3>
-            <p className="text-sm  text-body-dark">{order?.tracking_number}</p>
+            <p className="text-sm  text-body-dark">{dataOrder?.id}</p>
           </div>
           <div className="py-4 px-5 border border-border-200 rounded shadow-sm">
             <h3 className="mb-2 text-sm  text-heading font-semibold">
               {t('text-date')}
             </h3>
             <p className="text-sm text-body-dark">
-              {dayjs(order?.created_at).format('MMMM D, YYYY')}
+              {dayjs(dataOrder?.createdAt).format('MMMM D, YYYY')}
             </p>
           </div>
           <div className="py-4 px-5 border border-border-200 rounded shadow-sm">
@@ -77,7 +80,7 @@ export default function OrderView({ order }: any) {
               {t('text-payment-method')}
             </h3>
             <p className="text-sm text-body-dark">
-              {order?.payment_gateway ?? 'N/A'}
+              {dataOrder?.paymentMethod?.name ?? 'N/A'}
             </p>
           </div>
         </div>
@@ -143,7 +146,7 @@ export default function OrderView({ order }: any) {
                 </strong>
                 :
                 <span className="w-8/12 ps-4 text-sm ">
-                  {formatString(order?.products?.length, t('text-item'))}
+                  {formatString(dataOrder?.items?.length, t('text-item'))}
                 </span>
               </p>
               <p className="flex text-body-dark mt-5">
@@ -152,7 +155,7 @@ export default function OrderView({ order }: any) {
                 </strong>
                 :
                 <span className="w-8/12 ps-4 text-sm ">
-                  {order?.delivery_time}
+                  {dataOrder?.deliveryTime}
                 </span>
               </p>
               <p className="flex text-body-dark mt-5">
@@ -161,7 +164,11 @@ export default function OrderView({ order }: any) {
                 </strong>
                 :
                 <span className="w-8/12 ps-4 text-sm ">
-                  {formatAddress(order?.shipping_address!)}
+                  {formatAddress(
+                    dataOrder?.address,
+                    dataOrder?.district,
+                    dataOrder?.city
+                  )}
                 </span>
               </p>
             </div>
@@ -169,9 +176,9 @@ export default function OrderView({ order }: any) {
           {/* end of order details */}
         </div>
         <div className="mt-12">
-          <OrderItems products={order?.products} />
+          <OrderItems items={dataOrder?.items} />
         </div>
-        {order?.children?.length ? (
+        {dataOrder?.children?.length ? (
           <div>
             <h2 className="text-xl font-bold text-heading mt-12 mb-6">
               {t('text-sub-orders')}
@@ -186,11 +193,12 @@ export default function OrderView({ order }: any) {
                   {t('message-sub-order')}
                 </p>
               </div>
-              {Array.isArray(order?.children) && order?.children.length && (
-                <div className="">
-                  <SuborderItems items={order?.children} />
-                </div>
-              )}
+              {Array.isArray(dataOrder?.children) &&
+                dataOrder?.children.length && (
+                  <div className="">
+                    <SuborderItems items={dataOrder?.children} />
+                  </div>
+                )}
             </div>
           </div>
         ) : null}

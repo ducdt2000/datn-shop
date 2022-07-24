@@ -6,7 +6,7 @@ import OrderView from '@components/orders/order-view';
 export default function Order() {
   const { query } = useRouter();
   const { data, isLoading } = useOrderQuery({
-    tracking_number: query.tracking_number as string,
+    id: query.id as string,
   });
 
   if (isLoading) {

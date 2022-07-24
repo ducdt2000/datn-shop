@@ -1,103 +1,100 @@
-import { Table } from '@components/ui/table';
+import { AntdTable } from '@components/ui/table';
 import usePrice from '@lib/use-price';
 import { useTranslation } from 'next-i18next';
-import { useIsRTL } from '@lib/locals';
-import { useMemo } from 'react';
 import { Image } from '@components/ui/image';
 import { productPlaceholder } from '@lib/placeholders';
+import { useMemo } from 'react';
 
 const OrderItemList = (_: any, record: any) => {
-  const { price } = usePrice({
-    amount: record.pivot?.unit_price,
-  });
-  let name = record.name;
-  if (record?.pivot?.variation_option_id) {
-    const variationTitle = record?.variation_options?.find(
-      (vo: any) => vo?.id === record?.pivot?.variation_option_id
-    )['title'];
-    name = `${name} - ${variationTitle}`;
-  }
   return (
-    <div className="flex items-center">
-      <div className="w-16 h-16 flex flex-shrink-0 rounded overflow-hidden relative">
-        <Image
-          src={record.image?.thumbnail ?? productPlaceholder}
-          alt={name}
-          className="w-full h-full object-cover"
-          layout="fill"
-        />
-      </div>
+    <>
+      <div className="flex items-center">
+        <div className="w-16 h-16 flex flex-shrink-0 rounded overflow-hidden relative">
+          <Image
+            src={record?.defaultImageLink ?? productPlaceholder}
+            alt={record?.name}
+            className="w-full h-full object-cover"
+            layout="fill"
+          />
+        </div>
 
-      <div className="flex flex-col ms-4 overflow-hidden">
-        <div className="flex mb-1">
-          <span className="text-sm text-body truncate inline-block overflow-hidden">
-            {name} x&nbsp;
-          </span>
-          <span className="text-sm text-heading font-semibold truncate inline-block overflow-hidden">
-            {record.unit}
+        <div className="flex flex-col ms-4 overflow-hidden">
+          <div className="flex mb-1">
+            <span className="text-sm text-body truncate inline-block overflow-hidden">
+              {record?.name} x&nbsp;
+            </span>
+            <span className="text-sm text-heading font-semibold truncate inline-block overflow-hidden">
+              {record.unit}
+            </span>
+          </div>
+          <span className="text-sm text-accent font-semibold mb-1 truncate inline-block overflow-hidden">
+            {record?.priceString}
           </span>
         </div>
-        <span className="text-sm text-accent font-semibold mb-1 truncate inline-block overflow-hidden">
-          {price}
-        </span>
       </div>
-    </div>
+    </>
   );
 };
-export const OrderItems = ({ products }: { products: any }) => {
+
+export const OrderItems = ({ items }: { items: any }) => {
   const { t } = useTranslation('common');
-  const { alignLeft, alignRight } = useIsRTL();
+  items.forEach((item: any) => {
+    const { price } = usePrice({
+      amount: item.price,
+    });
+
+    const { price: total } = usePrice({
+      amount: item.price * item.amount,
+    });
+
+    item.priceString = price;
+    item.totalString = total;
+  });
 
   const orderTableColumns = useMemo(
     () => [
       {
         title: <span className="ps-20">{t('text-item')}</span>,
-        dataIndex: '',
-        key: 'items',
-        align: alignLeft,
+        dataIndex: 'items',
+        key: '',
+        align: 'left',
         width: 250,
         ellipsis: true,
-        render: OrderItemList,
+        render: (id: any, record: any) => OrderItemList(id, record),
       },
       {
         title: t('text-quantity'),
-        dataIndex: 'pivot',
-        key: 'pivot',
+        dataIndex: 'amount',
+        key: 'amount',
         align: 'center',
         width: 100,
-        render: function renderQuantity(pivot: any) {
-          return <p className="text-base">{pivot.order_quantity}</p>;
+        render: (amount: any) => {
+          return <p className="text-base">{amount}</p>;
         },
       },
       {
         title: t('text-price'),
-        dataIndex: 'pivot',
-        key: 'price',
-        align: alignRight,
+        dataIndex: 'totalString',
+        key: 'totalString',
+        align: 'right',
         width: 100,
-        render: function RenderPrice(pivot: any) {
-          const { price } = usePrice({
-            amount: pivot.subtotal,
-          });
-          return <p>{price}</p>;
+        render: (value: any) => {
+          return <div>{value}</div>;
         },
       },
     ],
-    [alignLeft, alignRight, t]
+    [t]
   );
 
   return (
-    <Table
-      //@ts-ignore
-      columns={orderTableColumns}
-      data={products}
-      rowKey={(record: any) =>
-        record.pivot?.variation_option_id
-          ? record.pivot.variation_option_id
-          : record.created_at
-      }
-      className="orderDetailsTable w-full"
-      scroll={{ x: 350, y: 500 }}
-    />
+    <>
+      <AntdTable
+        columns={orderTableColumns}
+        dataSource={items}
+        rowKey="id"
+        scroll={{ x: 350, y: 500 }}
+        pagination={false}
+      ></AntdTable>
+    </>
   );
 };
