@@ -13,6 +13,10 @@ class Order extends CoreApi {
     super(_base_path);
   }
 
+  getLogs(orderId: string) {
+    return this.http.get(`${API_ENDPOINTS.ORDERS}/${orderId}`);
+  }
+
   verifyCheckout(input: VerifyCheckoutInputType) {
     return this.http
       .post(API_ENDPOINTS.VERIFY_CHECKOUT, input)

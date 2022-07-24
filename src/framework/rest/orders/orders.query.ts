@@ -2,6 +2,7 @@ import {
   QueryParamsType,
   Order,
   OrdersQueryOptionsType,
+  OrderLog,
 } from '@framework/types';
 import { ParamsType } from '@framework/utils/core-api';
 import { mapPaginatorData } from '@framework/utils/data-mappers';
@@ -58,20 +59,14 @@ const useOrdersQuery = (
 export { useOrdersQuery, fetchOrders };
 
 export const fetchOrder = async (orderId: string) => {
-  const { data } = await OrderService.findOne(
-    `${API_ENDPOINTS.ORDER}/${orderId}`
-  );
+  const { data } = await OrderService.findOne(orderId);
   return {
     order: data,
   };
 };
-export const useOrderQuery = ({
-  tracking_number,
-}: {
-  tracking_number: string;
-}) => {
-  return useQuery<{ order: Order }, Error>(['order', tracking_number], () =>
-    fetchOrder(tracking_number)
+export const useOrderQuery = ({ id }: { id: string }) => {
+  return useQuery<{ order: { data: Order } }, Error>(['order', id], () =>
+    fetchOrder(id)
   );
 };
 
@@ -85,6 +80,18 @@ export const fetchOrderStatuses = async () => {
 };
 export const useOrderStatusesQuery = () => {
   return useQuery<any, Error>(API_ENDPOINTS.ORDER_STATUS, fetchOrderStatuses);
+};
+
+export const fetchOrderLogs = async (orderId: string) => {
+  const {
+    data: { data, ...rest },
+  } = await OrderService.getLogs(orderId);
+};
+
+export const useOrderLogsQuery = ({ orderId }: { orderId: string }) => {
+  return useQuery<any, Error>(['order', orderId], () =>
+    fetchOrderLogs(orderId)
+  );
 };
 
 export type OrderCreateInputType = {

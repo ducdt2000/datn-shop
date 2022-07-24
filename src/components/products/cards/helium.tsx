@@ -45,7 +45,7 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
   const { openModal } = useModalAction();
 
   function handleProductQuickView() {
-    return openModal('PRODUCT_DETAILS', product.slug);
+    return openModal('PRODUCT_DETAILS', product.id);
   }
 
   return (

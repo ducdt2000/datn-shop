@@ -5,7 +5,7 @@ import usePrice from '@lib/use-price';
 import { ThumbsCarousel } from '@components/ui/thumb-carousel';
 import { useTranslation } from 'next-i18next';
 import { getVariations } from '@lib/get-variations';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import Truncate from '@components/ui/truncate';
@@ -24,6 +24,8 @@ import { Waypoint } from 'react-waypoint';
 import { stickyShortDetailsAtom } from '@store/sticky-short-details-atom';
 import { useAttributes } from './attributes.context';
 import classNames from 'classnames';
+import Card from '@components/common/card';
+import PropertyBadges from './property-badges';
 
 type Props = {
   product: Product;
@@ -42,16 +44,21 @@ const Details: React.FC<Props> = ({
     unit: unit,
     productType: productType,
     gallery,
+    brand,
     type,
     countInStock: quantity,
     brand: shop,
     slug,
+    defaultImageLink,
+    imageLinks,
+    properties,
   } = product ?? {};
   const { t } = useTranslation('common');
   const [_, setShowStickyShortDetails] = useAtom(stickyShortDetailsAtom);
 
   const router = useRouter();
   const { closeModal } = useModalAction();
+  const [propertiesSelect, setProperties] = useState<any>({});
 
   const { attributes } = useAttributes();
 
@@ -110,12 +117,12 @@ const Details: React.FC<Props> = ({
           </div>
 
           <div className="product-gallery h-full">
-            {!!gallery?.length ? (
-              <ThumbsCarousel gallery={gallery} />
+            {imageLinks?.length ? (
+              <ThumbsCarousel gallery={imageLinks} />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <Image
-                  src={image?.original ?? productPlaceholder}
+                  src={defaultImageLink ?? productPlaceholder}
                   alt={name}
                   width={450}
                   height={450}
@@ -230,28 +237,33 @@ const Details: React.FC<Props> = ({
             </div>
           </Waypoint>
 
-          {!!productType && (
+          {!!(productType || brand) && (
             <CategoryBadges
-              categories={[productType]}
+              productType={productType}
+              brand={brand}
               basePath={`/${type?.id}`}
               onClose={closeModal}
             />
           )}
-
-          {shop?.name && (
-            <div className="flex items-center mt-2">
-              <span className="text-sm font-semibold text-heading capitalize me-6 py-1">
-                {t('common:text-sellers')}
-              </span>
-
-              <button
-                onClick={() => navigate(`${ROUTES.SHOPS}/${shop?.slug}`)}
-                className="text-sm text-accent tracking-wider transition underline hover:text-accent-hover hover:no-underline"
-              >
-                {shop?.name}
-              </button>
-            </div>
-          )}
+          <div className="w-full">
+            {properties?.map((property: { name: string; values: [] }) => (
+              <div>
+                <Card>
+                  <PropertyBadges
+                    name={property.name}
+                    values={property.values}
+                    setKeyValue={(value: any) => {
+                      setProperties({
+                        ...propertiesSelect,
+                        [property.name]: value,
+                      });
+                    }}
+                    value={propertiesSelect[property.name]}
+                  />
+                </Card>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

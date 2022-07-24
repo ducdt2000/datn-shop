@@ -1,4 +1,6 @@
 export const ROUTES = {
+  PROFILE: '/profile',
+  CHECKOUT: '/checkout',
   DASHBOARD: '/',
   SHOPS: '/shops',
   BRANDS: '/brands',
@@ -26,4 +28,6 @@ export const ROUTES = {
   PROFILE_UPDATE: '/profile-update',
   LOGOUT: '/logout',
   STAFFS: '/staffs',
+  CHANGE_PASSWORD: '/change-password',
+  HELP: '/help',
 };

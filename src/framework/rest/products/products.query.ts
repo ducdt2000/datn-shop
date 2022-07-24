@@ -31,7 +31,6 @@ const fetchProducts = async ({
   const { data, ...rest } = fetchedData;
 
   //here
-  console.log('rest', rest);
 
   return { data, paginatorInfo: mapPaginatorData({ ...rest }) };
 };

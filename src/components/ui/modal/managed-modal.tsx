@@ -14,6 +14,10 @@ const UserDetailsModalView = dynamic(
   { ssr: false }
 );
 
+const ProductDetailsModalView = dynamic(
+  () => import('@framework/products/product')
+);
+
 const WarehouseUpdateStatusView = dynamic(
   () => import('@components/warehouse/warehouse-update-status')
 );
@@ -25,7 +29,7 @@ const WarehouseItemCreateView = dynamic(
 const Login = dynamic(() => import('@framework/auth/login'));
 
 const ManagedModal = () => {
-  const { isOpen, view } = useModalState();
+  const { isOpen, view, data } = useModalState();
   const { closeModal } = useModalAction();
 
   return (
@@ -37,6 +41,7 @@ const ManagedModal = () => {
       {view === 'BAN_WAREHOUSE' && <WarehouseUpdateStatusView />}
       {view === 'CREATE_WAREHOUSE_ITEM' && <WarehouseItemCreateView />}
       {view === 'LOGIN_VIEW' && <Login />}
+      {view === 'PRODUCT_DETAILS' && <ProductDetailsModalView id={data} />}
     </Modal>
   );
 };

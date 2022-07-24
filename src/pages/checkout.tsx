@@ -22,8 +22,6 @@ export default function CheckoutPage() {
   const { me } = useUser();
   const { t } = useTranslation();
 
-  console.log('thisisme', me);
-
   const { data } = me;
 
   return (

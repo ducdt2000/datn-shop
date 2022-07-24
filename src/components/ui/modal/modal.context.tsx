@@ -22,7 +22,8 @@ export type MODAL_VIEWS =
   | 'EXPORT_IMPORT_ATTRIBUTE'
   | 'BAN_WAREHOUSE'
   | 'CREATE_WAREHOUSE_ITEM'
-  | 'LOGIN_VIEW';
+  | 'LOGIN_VIEW'
+  | 'PRODUCT_DETAILS';
 
 interface State {
   view?: MODAL_VIEWS;

@@ -107,7 +107,10 @@ export declare type Product = {
   name?: string;
   slug?: string;
   type?: Type;
+  properties?: any[];
   productType?: Category;
+  defaultImageLink?: string;
+  imageLinks: string[];
   variations: AttributeValue[];
   variation_options: Variation[];
   // pivot?: OrderProductPivot
@@ -136,6 +139,8 @@ export declare type UserAddress = {
   zip?: string;
 };
 
+export declare type OrderLog = {};
+
 export declare type Order = {
   id: number | string;
   tracking_number: string;
@@ -158,6 +163,7 @@ export declare type Order = {
   updated_at: Date;
   billing_address?: UserAddress;
   shipping_address?: UserAddress;
+  orderLogs: any[];
 };
 
 export type SettingsType = {

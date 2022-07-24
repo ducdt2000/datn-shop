@@ -19,13 +19,31 @@ export const siteSettings = {
   },
   headerLinks: [],
   authorizedLinks: [
+    { href: ROUTES.PROFILE, label: 'auth-menu-profile' },
+    { href: ROUTES.CHECKOUT, label: 'auth-menu-checkout' },
+    { href: ROUTES.ORDERS, label: 'auth-menu-my-orders' },
+    { href: ROUTES.LOGOUT, label: 'auth-menu-logout' },
+  ],
+  dashboardSidebarMenu: [
     {
-      href: ROUTES.PROFILE_UPDATE,
-      labelTransKey: 'authorized-nav-item-profile',
+      href: ROUTES.PROFILE,
+      label: 'profile-sidebar-profile',
+    },
+    {
+      href: ROUTES.CHANGE_PASSWORD,
+      label: 'profile-sidebar-password',
+    },
+    {
+      href: ROUTES.ORDERS,
+      label: 'profile-sidebar-orders',
+    },
+    {
+      href: ROUTES.HELP,
+      label: 'profile-sidebar-help',
     },
     {
       href: ROUTES.LOGOUT,
-      labelTransKey: 'authorized-nav-item-logout',
+      label: 'profile-sidebar-logout',
     },
   ],
   currencyCode: 'VND',

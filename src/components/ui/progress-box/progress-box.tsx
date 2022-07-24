@@ -1,11 +1,13 @@
-import { CheckMark } from "@components/icons/checkmark";
-import cn from "classnames";
-import Scrollbar from "@components/ui/scrollbar";
-import styles from "./progress-box.module.css";
+import { CheckMark } from '@components/icons/checkmark';
+import cn from 'classnames';
+import Scrollbar from '@components/ui/scrollbar';
+import styles from './progress-box.module.css';
+import { ORDER_STATUS, ORDER_STATUS_NAME } from '@ts-types/generated';
+import { formatAddress } from '@utils/format-address';
 
 type ProgressProps = {
   data: any[] | undefined;
-  status: number;
+  status: ORDER_STATUS;
 };
 
 const ProgressBox: React.FC<ProgressProps> = ({ status, data }) => {
@@ -14,7 +16,7 @@ const ProgressBox: React.FC<ProgressProps> = ({ status, data }) => {
       className="w-full h-full"
       options={{
         scrollbars: {
-          autoHide: "never",
+          autoHide: 'never',
         },
       }}
     >
@@ -24,16 +26,16 @@ const ProgressBox: React.FC<ProgressProps> = ({ status, data }) => {
             <div
               className={cn(
                 styles.progress_wrapper,
-                status >= item.serial ? styles.checked : ""
+                status >= item.status ? styles.checked : ''
               )}
             >
               <div className={styles.status_wrapper}>
-                {status >= item.serial ? (
+                {status >= item.status ? (
                   <div className="w-3 h-4">
                     <CheckMark className="w-full" />
                   </div>
                 ) : (
-                  item.serial
+                  item.status
                 )}
               </div>
               <div className={styles.bar} />
@@ -41,9 +43,21 @@ const ProgressBox: React.FC<ProgressProps> = ({ status, data }) => {
 
             <div className="flex flex-col items-start ms-5 md:items-center md:ms-0">
               {item && (
-                <span className="text-base text-body-dark capitalize font-semibold text-start md:text-center md:px-2">
-                  {item?.name}
-                </span>
+                <>
+                  <span className="text-base text-body-dark capitalize font-semibold text-start md:text-center md:px-2">
+                    {
+                      //@ts-ignore
+                      ORDER_STATUS_NAME[item?.status]
+                    }
+                    {}
+                  </span>
+                  {item?.address && (
+                    <span>
+                      {formatAddress(item?.address, item?.district, item?.city)}
+                    </span>
+                  )}
+                  {item?.userName && <span>{item.userName}</span>}
+                </>
               )}
             </div>
           </div>

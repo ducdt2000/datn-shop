@@ -1111,13 +1111,22 @@ export enum WAREHOUSE_LOG_ORDER_BY {
 export enum ORDER_STATUS {
   CREATING = 0,
   CREATED = 1,
-  CONFIRM = 2,
-  PACKING = 3,
-  DELIVERING = 4,
-  DELIVERED = 5,
+  OrderProcessing = 2,
+  ReadyToDispatch = 3,
+  OrderDispatched = 4,
+  AtLocalFacility = 5,
   CANCELLED = 6,
   DONE = 7,
 }
+
+export const ORDER_STATUS_NAME = {
+  0: 'Creating',
+  1: 'Created',
+  2: 'Order Processing',
+  3: 'Ready To Dispatch',
+  4: 'Order Dispatched',
+  5: 'At Local Facility',
+};
 
 export enum GENDER {
   MALE = 1,

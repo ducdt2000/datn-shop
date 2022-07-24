@@ -42,7 +42,7 @@ export default function AuthorizedMenu() {
         >
           {siteSettings.authorizedLinks.map(({ href, label }) => (
             <Menu.Item key={`${href}${label}`}>
-              {({ active }) => (
+              {({ active }: any) => (
                 <li>
                   <button
                     onClick={() => handleClick(href)}

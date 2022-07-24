@@ -24,12 +24,6 @@ export class CoreApi {
   constructor(public _base_path: string) {}
   find(params: ParamsType) {
     const {
-      type,
-      text: name,
-      category,
-      status,
-      is_active,
-      shop_id,
       limit = 10,
       offset,
       search,

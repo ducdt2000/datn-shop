@@ -39,6 +39,7 @@ export const ThumbsCarousel: React.FC<Props> = ({ gallery }) => {
   const { isRTL } = useIsRTL();
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
+
   return (
     <div>
       <div className="relative">
@@ -54,12 +55,13 @@ export const ThumbsCarousel: React.FC<Props> = ({ gallery }) => {
         >
           {gallery?.map((item: any) => (
             <SwiperSlide
-              key={`product-gallery-${item.id}`}
+              key={`product-gallery-${item}`}
               className="flex items-center justify-center selection:bg-transparent"
             >
               <Image
-                src={item?.original ?? productPlaceholder}
-                alt={`Product gallery ${item.id}`}
+                objectFit="contain"
+                src={item ?? productPlaceholder}
+                alt={`Product gallery ${item}`}
                 width={450}
                 height={450}
               />
@@ -106,7 +108,7 @@ export const ThumbsCarousel: React.FC<Props> = ({ gallery }) => {
               className="flex items-center justify-center cursor-pointer rounded overflow-hidden border border-border-200 border-opacity-75 hover:opacity-75"
             >
               <Image
-                src={item?.thumbnail ?? productPlaceholder}
+                src={item ?? productPlaceholder}
                 alt={`Product thumb gallery ${item.id}`}
                 width={80}
                 height={80}

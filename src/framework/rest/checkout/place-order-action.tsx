@@ -74,8 +74,6 @@ export const PlaceOrderAction: React.FC = (props) => {
 
     // shipping_address
 
-    console.log('test123123', shipping_address);
-
     const buffer = shipping_address?.split(', ');
 
     let input: OrderCreateInputType = {
@@ -96,8 +94,6 @@ export const PlaceOrderAction: React.FC = (props) => {
     }
     createOrder(input, {
       onSuccess: ({ data }: any) => {
-        console.log('thisisorder');
-
         if (data?.id) {
           resetCart();
           router.push(`${ROUTES.ORDERS}/${data.id}`);

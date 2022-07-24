@@ -1,8 +1,9 @@
 import Popup from '@components/products/details/popup';
-import { useProductQuery } from '@framework/products/products.query';
+import { useProductQuery } from '@data/products/product.query';
+// import { useProductQuery } from '@framework/products/products.query';
 
-const ProductPopup = ({ productSlug }: { productSlug: string }) => {
-  const { data, isLoading: loading } = useProductQuery(productSlug);
+const ProductPopup = ({ id }: { id: string }) => {
+  const { data, isLoading: loading } = useProductQuery(id);
 
   return <Popup product={data!} loading={loading} />;
 };

@@ -32,6 +32,8 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
     name,
     slug,
     image,
+    defaultImageLink,
+    imageLinks,
     unit: unit,
     countInStock: quantity,
     price: min_price,
@@ -86,7 +88,7 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
           )}
         >
           <Image
-            src={image?.original! ?? productPlaceholder}
+            src={defaultImageLink ?? productPlaceholder}
             alt={name}
             layout="fill"
             objectFit="contain"
