@@ -111,11 +111,20 @@ export const PlaceOrderAction: React.FC = (props) => {
   const isAllRequiredFieldSelected = [
     customer_contact,
     payment_gateway,
-    billing_address,
     shipping_address,
     delivery_time,
     available_items,
   ].every((item) => !isEmpty(item));
+
+  console.log(
+    customer_contact,
+    payment_gateway,
+    billing_address,
+    shipping_address,
+    delivery_time,
+    available_items
+  );
+
   return (
     <>
       <Button

@@ -25,7 +25,8 @@ export const CheckAvailabilityAction: React.FC = (props) => {
     useVerifyCheckoutMutation();
 
   function handleVerifyCheckout() {
-    if (billing_address && shipping_address) {
+    console.log('thisisbilling', billing_address, shipping_address);
+    if (billing_address || shipping_address) {
       verifyCheckout(
         {
           amount: total,

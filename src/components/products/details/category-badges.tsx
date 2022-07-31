@@ -19,8 +19,8 @@ const CategoryBadges = ({ onClose, productType, brand, basePath }: Props) => {
   return (
     <>
       <div className="w-full mt-4 md:mt-6 pt-4 md:pt-6 flex flex-row items-start border-t border-border-200 border-opacity-60">
-        <span className="text-sm font-semibold text-heading capitalize me-6 py-1">
-          {t('text-productType')}
+        <span className="text-sm font-semibold text-heading me-6 py-1">
+          {t('Product Type')}
         </span>
         <div className="flex flex-row flex-wrap">
           <button
@@ -34,7 +34,7 @@ const CategoryBadges = ({ onClose, productType, brand, basePath }: Props) => {
       </div>
       <div className="w-full mt-4 md:mt-6 pt-4 md:pt-6 flex flex-row items-start border-t border-border-200 border-opacity-60">
         <span className="text-sm font-semibold text-heading capitalize me-6 py-1">
-          {t('text-brand')}
+          {t('Brand')}
         </span>
         <div className="flex flex-row flex-wrap">
           <button
