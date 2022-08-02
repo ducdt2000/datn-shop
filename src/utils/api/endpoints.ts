@@ -1,4 +1,6 @@
 export const API_ENDPOINTS = {
+  CUSTOM_PRODUCT: 'custom-products',
+  CUSTOM_PRODUCT_TEMPLATE: 'custom-products/templates',
   PUBLIC_FILE: 'files/publics',
   ATTACHMENTS: 'attachments',
   BRANDS: 'brands',

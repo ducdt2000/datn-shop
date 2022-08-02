@@ -8,13 +8,16 @@ import { displayMobileHeaderSearchAtom } from '@store/display-mobile-header-sear
 import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import { authorizationAtom } from '@store/authorization-atom';
-import { useIsHomePage } from '@lib/use-is-homepage';
+// import { useIsHomePage } from '@lib/use-is-homepage';
 import useLayout from '@framework/utils/use-layout';
 import { useEffect } from 'react';
 const Search = dynamic(() => import('@components/ui/search/search'));
 const AuthorizedMenu = dynamic(() => import('./menu/authorized-menu'), {
   ssr: false,
 });
+
+const CustomProductMenu = dynamic(() => import('./menu/custom-product-menu'));
+
 const JoinButton = dynamic(() => import('./menu/join-button'), { ssr: false });
 
 const Header = () => {
@@ -25,7 +28,7 @@ const Header = () => {
   );
   const [displayMobileHeaderSearch] = useAtom(displayMobileHeaderSearchAtom);
   const [isAuthorize] = useAtom(authorizationAtom);
-  const isHomePage = useIsHomePage();
+  const isHomePage = true;
   useEffect(() => {
     if (!isHomePage) {
       setDisplayHeaderSearch(false);
@@ -58,7 +61,7 @@ const Header = () => {
         {isHomePage ? (
           <>
             {(displayHeaderSearch || layout === 'modern') && (
-              <div className="hidden lg:block w-full xl:w-11/12 2xl:w-10/12 mx-auto px-10 overflow-hidden">
+              <div className="hidden lg:block w-full xl:w-11/12 2xl:w-3/4 mx-auto px-10 overflow-hidden">
                 <Search label={t('text-search-label')} variant="minimal" />
               </div>
             )}
@@ -72,6 +75,9 @@ const Header = () => {
         ) : null}
         <ul className="hidden lg:flex items-center flex-shrink-0 space-s-10">
           <StaticMenu />
+          <li>
+            <CustomProductMenu />
+          </li>
           <li>{isAuthorize ? <AuthorizedMenu /> : <JoinButton />}</li>
         </ul>
       </div>
